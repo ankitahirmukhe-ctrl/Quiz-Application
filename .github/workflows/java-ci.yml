@@ -1,0 +1,40 @@
+```yaml
+name: Java Quiz Application CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compile Java application
+        working-directory: Java-Quiz-Application
+        run: |
+          mkdir -p out
+          javac -d out src/*.java
+
+      - name: Verify compiled classes
+        working-directory: Java-Quiz-Application
+        run: |
+          test -f out/Main.class
+          test -f out/Question.class
+          test -f out/Quiz.class
+          echo "Java compilation successful!"
+```
